@@ -1,0 +1,79 @@
+<!-- LAYOUT TEMPLATE -->
+
+<body>
+    <div class="ui grid" style="margin: 10px">
+        <div class="four wide column" style="max-width: 400px;">{{> SSBIUsers}}</div>
+        <div class="twelve wide column">{{> SSBISenseApp}} </div>
+    </div>
+</body>
+
+<template name="SSBISenseApp">
+    {{#if show}} {{> SSBISenseIFrame}} {{/if}}
+</template>
+
+<template name="SSBISenseIFrame">
+    <div class="IFrameSense">
+        <iframe class="SSBIIFrame" src="{{appURL}}"></iframe>
+    </div>
+</template>
+<template name="SSBIUsers">
+    <h4 class="ui dividing header" style="position: relative;
+  left: -13px; margin-top: 20px;">Users: {{currentUser}}</h4>
+    <div class="ui  grid userList">
+        <div class="ui text loader">Logging in {{user}}...</div>
+        {{> userCards}}
+        {{#if showSenseButtons}}
+        <div class="ui row">
+            {{> senseButtons}}
+        </div>
+        {{/if}}
+    </div>
+
+ 
+</template>
+<template name="senseButtons">
+    <h4 class="ui dividing header">Select Qlik Sense page</h4>
+    <div class="ui blue button box-content" style="margin-bottom: 129px;">
+        <nav role="presentation" aria-label="Main Navigation" class="" id="flyoutnavkbfixed">
+            <ul>
+                <li class="has-submenu">
+                    <a href="#flyoutnavkbfixed" aria-expanded="false" aria-haspopup="true" id="bodyDropdown">Which page
+                        do you want to embed?</a>
+                    <ul class="selectRole">
+                        <!-- <li><a class="hub" href="#" >Hub</a></li> -->
+                        <li><a href="#" class="sheet">App</a></li>
+                        <li><a href="#" class="app">Sheet</a></li>
+                        <li><a href="#" class="QMC">QMC</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- 
+  <ul role="menubar" aria-label="functions" id="appmenu">
+      <li class="hub" role="menuitem"> <a href="">Hub</a> </li>
+      <li class="sheet" role="menuitem"><a href="">App</a> </li>
+      <li class="app" role="menuitem"><a href="">Sheet</a></li>
+      <li class="QMC" role="menuitem"><a href="">QMC</a></li>
+  </ul> -->
+
+</template>
+<template name="userCards">
+
+    <div class="ui blue button box-content" style="margin-bottom: 129px; margin-top: 12px;">
+        <nav role="presentation" aria-label="Main Navigation" class="" id="flyoutnavkbfixed">
+            <ul>
+                <li class="has-submenu">
+                    <a href="#flyoutnavkbfixed" aria-expanded="false" aria-haspopup="true" id="bodyDropdown">Select your
+                        user</a>
+                    <ul class="selectRole">
+                        <li><a class="consumer" href="#">John - Consumer - Germany</a></li>
+                        <li><a href="#" class="contributor">Linda - Contributor - US</a></li>
+                        <li><a href="#" class="developer">Martin - Developer - Everything</a></li>
+                        <li><a href="#" class="admin">Paul - Admin</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</template>
