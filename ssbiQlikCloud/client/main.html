@@ -3,7 +3,10 @@
 <body>
     <div class="ui grid" style="margin: 10px">
         <div class="four wide column" style="max-width: 400px;">{{> SSBIUsers}}</div>
-        <div class="twelve wide column">{{> SSBISenseApp}} </div>
+        <div class="twelve wide column">
+            <h4 class="ui dividing header">Qlik Sense</h4>
+            {{> SSBISenseApp}} 
+        </div>
     </div>
 </body>
 
@@ -21,7 +24,7 @@
 
 <template name="SSBIUsers">
     <h4 class="ui dividing header" style="position: relative;
-  left: -13px; margin-top: 20px;">Users: {{currentUser}}</h4>
+  left: -13px; margin-top: 0px;">Users: {{currentUser}}</h4>
     <div class="ui  grid userList">
         <div class="ui text loader">Logging in {{user}}...</div>
         {{> userCards}}
