@@ -71,12 +71,10 @@ Template.SSBIUsers.helpers({
 });
 
 Template.SSBIUsers.events({
-  "click .item"(event, target){
-    console.log('item clicked',event);
-    $(".menu .item").removeClass('active');
+  "click #users .item"(event, target){
+    console.log('user clicked',event);
+    $("#users .item").removeClass('active');
     $(event.target).addClass("active");
-    
-    $(this).addClass('active')
   },
   "click .consumer"() {
     var passport = {
@@ -105,9 +103,16 @@ Template.SSBIUsers.events({
       Groups: ["CONTRIBUTOR", "UNITED STATES"],
     };
     login(passport);
-  },
-  "click .selfservice "() {
-    $(".ui.modal.SSBI").modal("show").modal("refresh").modal("refresh");
+  }
+});
+
+Template.senseButtons.events({
+  "click #page .item"(event, template){
+    console.log('page selector clicked',event);
+    template.$("#page .item").removeClass('active');
+    $(event.target).addClass("active");
+    
+    $(this).addClass('active')
   },
   "click .hub "() {
     Session.set("IFrameUrl", hubUrl);
@@ -130,14 +135,6 @@ Template.SSBIUsers.onCreated(function () {
 Template.SSBIUsers.onRendered(function () {
   // this.$(".ui.accordion").accordion();
 });
-
-function waitTwoSeconds() {
-  return new Promise((resolve, reject) => {
-    Meteor.setTimeout(() => {
-      resolve();
-    }, 2000);
-  });
-}
 
 async function login(passport) {
   console.log("🚀 ~ file: SSBI.js:136 ~ login ~ passport:", passport);
@@ -229,189 +226,10 @@ Template.userCards.onRendered(function () {
   // });
   // this.$(".column").transition("scale in");
 
-  this.$("#flyoutnavkbfixed").focus();
-
-  !(function () {
-    var w = window,
-      d = w.document;
-
-    if (w.onfocusin === undefined) {
-      d.addEventListener("focus", addPolyfill, true);
-      d.addEventListener("blur", addPolyfill, true);
-      d.addEventListener("focusin", removePolyfill, true);
-      d.addEventListener("focusout", removePolyfill, true);
-    }
-    function addPolyfill(e) {
-      var type = e.type === "focus" ? "focusin" : "focusout";
-      var event = new CustomEvent(type, { bubbles: true, cancelable: false });
-      event.c1Generated = true;
-      e.target.dispatchEvent(event);
-    }
-    function removePolyfill(e) {
-      if (!e.c1Generated) {
-        // focus after focusin, so chrome will the first time trigger tow times focusin
-        d.removeEventListener("focus", addPolyfill, true);
-        d.removeEventListener("blur", addPolyfill, true);
-        d.removeEventListener("focusin", removePolyfill, true);
-        d.removeEventListener("focusout", removePolyfill, true);
-      }
-      setTimeout(function () {
-        d.removeEventListener("focusin", removePolyfill, true);
-        d.removeEventListener("focusout", removePolyfill, true);
-      });
-    }
-  })();
-
-  function hasClass(el, className) {
-    if (el.classList) {
-      return el.classList.contains(className);
-    } else {
-      return new RegExp("(^| )" + className + "( |$)", "gi").test(el.className);
-    }
-  }
-
-  var menuItems1 = document.querySelectorAll(
-    "#flyoutnavkbfixed li.has-submenu"
-  );
-  var timer1, timer2;
-
-  Array.prototype.forEach.call(menuItems1, function (el, i) {
-    el.addEventListener("mouseover", function (event) {
-      this.className = "has-submenu open";
-      clearTimeout(timer1);
-    });
-    el.addEventListener("mouseout", function (event) {
-      timer1 = setTimeout(function (event) {
-        var opennav = document.querySelector(
-          "#flyoutnavkbfixed .has-submenu.open"
-        );
-        opennav.className = "has-submenu";
-        opennav.querySelector("a").setAttribute("aria-expanded", "false");
-      }, 1000);
-    });
-    el.querySelector("a").addEventListener("click", function (event) {
-      if (this.parentNode.className == "has-submenu") {
-        this.parentNode.className = "has-submenu open";
-        this.setAttribute("aria-expanded", "true");
-      } else {
-        this.parentNode.className = "has-submenu";
-        this.setAttribute("aria-expanded", "false");
-      }
-      event.preventDefault();
-    });
-    var links = el.querySelectorAll("a");
-    Array.prototype.forEach.call(links, function (el, i) {
-      el.addEventListener("focus", function () {
-        if (timer2) {
-          clearTimeout(timer2);
-          timer2 = null;
-        }
-      });
-      el.addEventListener("blur", function (event) {
-        timer2 = setTimeout(function () {
-          var opennav = document.querySelector(
-            "#flyoutnavkbfixed .has-submenu.open"
-          );
-          if (opennav) {
-            opennav.className = "has-submenu";
-            opennav.querySelector("a").setAttribute("aria-expanded", "false");
-          }
-        }, 10);
-      });
-    });
   });
-});
 
 Template.senseButtons.onRendered(function () {
   this.$(".SenseIframe").transition("swing up");
 
-  !(function () {
-    var w = window,
-      d = w.document;
-
-    if (w.onfocusin === undefined) {
-      d.addEventListener("focus", addPolyfill, true);
-      d.addEventListener("blur", addPolyfill, true);
-      d.addEventListener("focusin", removePolyfill, true);
-      d.addEventListener("focusout", removePolyfill, true);
-    }
-    function addPolyfill(e) {
-      var type = e.type === "focus" ? "focusin" : "focusout";
-      var event = new CustomEvent(type, { bubbles: true, cancelable: false });
-      event.c1Generated = true;
-      e.target.dispatchEvent(event);
-    }
-    function removePolyfill(e) {
-      if (!e.c1Generated) {
-        // focus after focusin, so chrome will the first time trigger tow times focusin
-        d.removeEventListener("focus", addPolyfill, true);
-        d.removeEventListener("blur", addPolyfill, true);
-        d.removeEventListener("focusin", removePolyfill, true);
-        d.removeEventListener("focusout", removePolyfill, true);
-      }
-      setTimeout(function () {
-        d.removeEventListener("focusin", removePolyfill, true);
-        d.removeEventListener("focusout", removePolyfill, true);
-      });
-    }
-  })();
-
-  function hasClass(el, className) {
-    if (el.classList) {
-      return el.classList.contains(className);
-    } else {
-      return new RegExp("(^| )" + className + "( |$)", "gi").test(el.className);
-    }
-  }
-
-  var menuItems1 = document.querySelectorAll(
-    "#flyoutnavkbfixed li.has-submenu"
-  );
-  var timer1, timer2;
-
-  Array.prototype.forEach.call(menuItems1, function (el, i) {
-    el.addEventListener("mouseover", function (event) {
-      this.className = "has-submenu open";
-      clearTimeout(timer1);
-    });
-    el.addEventListener("mouseout", function (event) {
-      timer1 = setTimeout(function (event) {
-        var opennav = document.querySelector(
-          "#flyoutnavkbfixed .has-submenu.open"
-        );
-        opennav.className = "has-submenu";
-        opennav.querySelector("a").setAttribute("aria-expanded", "false");
-      }, 1000);
-    });
-    el.querySelector("a").addEventListener("click", function (event) {
-      if (this.parentNode.className == "has-submenu") {
-        this.parentNode.className = "has-submenu open";
-        this.setAttribute("aria-expanded", "true");
-      } else {
-        this.parentNode.className = "has-submenu";
-        this.setAttribute("aria-expanded", "false");
-      }
-      event.preventDefault();
-    });
-    var links = el.querySelectorAll("a");
-    Array.prototype.forEach.call(links, function (el, i) {
-      el.addEventListener("focus", function () {
-        if (timer2) {
-          clearTimeout(timer2);
-          timer2 = null;
-        }
-      });
-      el.addEventListener("blur", function (event) {
-        timer2 = setTimeout(function () {
-          var opennav = document.querySelector(
-            "#flyoutnavkbfixed .has-submenu.open"
-          );
-          if (opennav) {
-            opennav.className = "has-submenu";
-            opennav.querySelector("a").setAttribute("aria-expanded", "false");
-          }
-        }, 10);
-      });
-    });
-  });
+ 
 });

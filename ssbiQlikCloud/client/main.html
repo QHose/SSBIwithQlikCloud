@@ -16,12 +16,17 @@
         <iframe id="SSBIIFrame" class="SSBIIFrame" src="{{appURL}}"></iframe>
     </div>
 </template>
+
+
+
 <template name="SSBIUsers">
     <h4 class="ui dividing header" style="position: relative;
   left: -13px; margin-top: 20px;">Users: {{currentUser}}</h4>
     <div class="ui  grid userList">
         <div class="ui text loader">Logging in {{user}}...</div>
         {{> userCards}}
+
+
         {{#if showSenseButtons}}
         <div class="ui row">
             {{> senseButtons}}
@@ -36,8 +41,15 @@
 
     <div class="ui vertical menu">
         <div class="item">
-            <div class="header">Which page to embed?</div>
+            <div class="header">Which App?</div>
             <div class="menu">
+              <a class="item">Sales</a>
+              <a class="item">Bikes</a>
+            </div>
+          </div>
+        <div class="item">
+            <div class="header">Which page to embed?</div>
+            <div id="page" class="menu">
                 <a href="#" class="sheet item ">App</a>
                 <a href="#" class="app item ">Sheet</a>
                 <a href="#" class="QMC item">QMC</a>
@@ -50,7 +62,7 @@
     <div class="ui vertical menu">
         <div class="item">
             <div class="header">Users</div>
-            <div class="menu">
+            <div id="users" class="menu">
                 <a class="consumer active item" href="#">John - Consumer - Germany</a>
                 <a href="#" class="contributor item">Linda - Contributor - US</a>
                 <a href="#" class="developer item">Martin - Developer - Everything</a>
