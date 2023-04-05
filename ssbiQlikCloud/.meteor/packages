@@ -25,3 +25,4 @@ hot-module-replacement@0.5.2  # Update code in development without reloading the
 blaze-hot               # Update files using Blaze's API with HMR
 session
 semantic:ui-css
+tarang:ssl

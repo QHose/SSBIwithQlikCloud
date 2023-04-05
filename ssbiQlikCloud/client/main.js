@@ -71,6 +71,13 @@ Template.SSBIUsers.helpers({
 });
 
 Template.SSBIUsers.events({
+  "click .item"(event, target){
+    console.log('item clicked',event);
+    $(".menu .item").removeClass('active');
+    $(event.target).addClass("active");
+    
+    $(this).addClass('active')
+  },
   "click .consumer"() {
     var passport = {
       UserId: "John",
@@ -138,8 +145,7 @@ async function login(passport) {
     // await logoutCurrentUser();
     
     Session.set("currentUser", passport.UserId);    
-    Session.set("IFrameUrl", "https://" + Meteor.settings.public.tenantDomain + "/logout");
-    await waitTwoSeconds();
+    
     console.log('Two seconds have passed after calling the logout...');
 
 
@@ -147,20 +153,11 @@ async function login(passport) {
       if (error) {
         console.error("Error getJWTToken", error);
       } else {
-        // console.log("🚀 ~ file: SSBI.js:151 ~ login ~ token:", token);
         var URLtoOpen = Session.get("appUrl");
-        console.log("------------------------------------");
-        console.log(
-          "requesting JWT at Qlik cloud JWT IdP  with passport: " +
-            JSON.stringify(passport)
-        );
-        console.log("------------------------------------");
-
         await jwtLogin(token);
-        await waitTwoSeconds();
-
         console.log("login: the url to open is: ", URLtoOpen);
         Session.set("IFrameUrl", URLtoOpen);
+        refreshWindow();
       }
     });
   } catch (err) {
@@ -168,15 +165,8 @@ async function login(passport) {
   }
 }
 
-async function logoutCurrentUser() {
-  console.log("🚀 ~ file: main.js:161 ~ logoutCurrentUser")
-  
-  try {
-    const response = await axios.get('https://bies.eu.qlikcloud.com/logout');
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
-  }
+function refreshWindow(){
+  document.getElementById('SSBIIFrame').contentWindow.location.reload();
 }
 
 async function qlikLogin() {
