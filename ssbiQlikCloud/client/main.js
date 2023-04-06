@@ -1,9 +1,9 @@
-import { Template } from 'meteor/templating';
+import { Template } from "meteor/templating";
 // import { ReactiveVar } from 'meteor/reactive-var';
 import { Session } from "meteor/session";
 // import "main.html";
-import './main.html';
-import  axios from  'axios';
+import "./main.html";
+import axios from "axios";
 
 var server,
   QMCUrl,
@@ -23,27 +23,29 @@ Template.SSBISenseApp.helpers({
 Template.SSBIUsers.onCreated(function () {
   Session.set("loadingIndicator", "");
   Session.set("currentUser", null);
+  Session.set("appId", Meteor.settings.public.SSBI.appId1);
+  Session.set("sheetId", Meteor.settings.public.SSBI.sheetId1);
   server = Meteor.settings.public.tenantDomain;
   server = "https://" + server;
- 
-  var appId = Meteor.settings.public.SSBI.appId;
+
   console.log("server", server);
   QMCUrl = server + "/console";
   hubUrl = server + "/hub";
-  sheetUrl = server + "/sense/app/" + appId;
+  sheetUrl = server + "/sense/app/" + Session.get("appId");
   console.log("sheetUrl", sheetUrl);
   appUrl =
     server +
     "/sense/app/" +
-    appId +
+    Session.get("appId") +
     "/sheet/" +
-    Meteor.settings.public.SSBI.sheetId +
+    Session.get("sheetId") +
     "/state/analysis";
   console.log("SSBIApp URL", appUrl);
+  Session.set("IFrameUrl", appUrl);
 });
 
 Template.SSBISenseIFrame.onRendered(function () {
-  this.$(".IFrameSense").transition("slide in right");
+  this.$(".SSBIIFrame").transition("slide in right");
 });
 
 Template.SSBISenseIFrame.helpers({
@@ -71,9 +73,9 @@ Template.SSBIUsers.helpers({
 });
 
 Template.SSBIUsers.events({
-  "click #users .item"(event, target){
-    console.log('user clicked',event);
-    $("#users .item").removeClass('active');
+  "click #users .item"(event, target) {
+    // console.log("user clicked", event);
+    $("#users .item").removeClass("active");
     $(event.target).addClass("active");
   },
   "click .consumer"() {
@@ -103,16 +105,30 @@ Template.SSBIUsers.events({
       Groups: ["CONTRIBUTOR", "UNITED STATES"],
     };
     login(passport);
-  }
+  },
 });
 
 Template.senseButtons.events({
-  "click #page .item"(event, template){
-    console.log('page selector clicked',event);
-    template.$("#page .item").removeClass('active');
+  "click #page .item"(event, template) {
+    // console.log("page selector clicked", event);
+    template.$("#page .item").removeClass("active");
     $(event.target).addClass("active");
-    
-    $(this).addClass('active')
+    $(this).addClass("active");
+  },
+  "click #app .item"(event, template) {
+    // console.log("app selector clicked", event);
+    template.$(" .item").removeClass("active");
+    $(event.target).addClass("active");
+
+    $(this).addClass("active");
+  },
+  "click #app1 "() {
+    Session.set("appId", Meteor.settings.public.SSBI.appId1);
+    Session.set("sheetId", Meteor.settings.public.SSBI.sheetId1);
+  },
+  "click #app2 "() {
+    Session.set("appId", Meteor.settings.public.SSBI.appId2);
+    Session.set("sheetId", Meteor.settings.public.SSBI.sheetId2);
   },
   "click .hub "() {
     Session.set("IFrameUrl", hubUrl);
@@ -139,13 +155,7 @@ Template.SSBIUsers.onRendered(function () {
 async function login(passport) {
   console.log("🚀 ~ file: SSBI.js:136 ~ login ~ passport:", passport);
   try {
-    // await logoutCurrentUser();
-    
-    Session.set("currentUser", passport.UserId);    
-    
-    console.log('Two seconds have passed after calling the logout...');
-
-
+    Session.set("currentUser", passport.UserId);
     await Meteor.call("getJWTToken", passport, async function (error, token) {
       if (error) {
         console.error("Error getJWTToken", error);
@@ -162,8 +172,8 @@ async function login(passport) {
   }
 }
 
-function refreshWindow(){
-  document.getElementById('SSBIIFrame').contentWindow.location.reload();
+function refreshWindow() {
+  document.getElementById("SSBIIFrame").contentWindow.location.reload();
 }
 
 async function qlikLogin() {
@@ -191,7 +201,10 @@ async function qlikLogin() {
 }
 
 async function jwtLogin(token) {
-  console.log(`🚀 jwtLogin ~ Now using the token received from the server to make a client side call to  https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId} with jwtLogin ~ token:`,  token);
+  console.log(
+    `🚀 jwtLogin ~ Now using the token received from the server to make a client side call to  https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId} with jwtLogin ~ token:`,
+    token
+  );
   const authHeader = `Bearer ${token}`;
   return await fetch(
     `https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId}`,
@@ -225,11 +238,8 @@ Template.userCards.onRendered(function () {
   //   on: "hover",
   // });
   // this.$(".column").transition("scale in");
-
-  });
+});
 
 Template.senseButtons.onRendered(function () {
   this.$(".SenseIframe").transition("swing up");
-
- 
 });
