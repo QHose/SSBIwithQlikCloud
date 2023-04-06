@@ -1,17 +1,20 @@
 <!-- LAYOUT TEMPLATE -->
 
 <body>
-    <div class="ui grid" style="margin: 10px">
-        <div class="four wide column" style="max-width: 400px;">{{> SSBIUsers}}</div>
-        <div class="twelve wide column">
-            <h4 class="ui dividing header">Qlik Sense</h4>
-            {{> SSBISenseApp}} 
-        </div>
-    </div>
+    {{> mainLayout}}
 </body>
 
-<template name="SSBISenseApp">
-    {{#if show}} {{> SSBISenseIFrame}} {{/if}}
+<template name="mainLayout">
+    <div class="ui grid" style="margin: 10px">
+        <div class="two wide column" style="max-width: 400px;">{{> SSBIUsers}}</div>
+        <div class="fourteen wide column">
+            {{#if show}}
+            <h4 class="ui dividing header">Qlik Sense embedded {{ currentUser}}</h4>
+
+            {{> SSBISenseIFrame}}
+            {{/if}}
+        </div>
+    </div>
 </template>
 
 <template name="SSBISenseIFrame">
@@ -21,12 +24,11 @@
 </template>
 
 
-
 <template name="SSBIUsers">
     <h4 class="ui dividing header" style="position: relative;
-  left: -13px; margin-top: 0px;">Users: {{currentUser}}</h4>
+  left: -13px; margin-top: 0px;">User from your SaaS platform </h4>
     <div class="ui  grid userList">
-        <div class="ui text loader">Logging in {{user}}...</div>
+        <div class="ui text loader">Logging in {{user}}...</div>>
         {{> userCards}}
 
 
@@ -39,32 +41,12 @@
 
 
 </template>
-<template name="senseButtons">
-    <h4 class="ui dividing header">Content to embed</h4>
 
-    <div class="ui vertical menu">
-        <div class="item">
-            <div class="header">Which App?</div>
-            <div id="app" class="menu">
-              <a id="app1" class="active item">Sales</a>
-              <a id="app2" class="item">Bikes</a>
-            </div>
-          </div>
-        <div class="item">
-            <div class="header">Which page to embed?</div>
-            <div id="page" class="menu">
-                <a href="#" class="sheet item ">Sheet overview</a>
-                <a href="#" class="active app item ">Sheet</a>
-                <a href="#" class="QMC item">Management console</a>
-            </div>
-        </div>
-    </div> 
-</template>
 
 <template name="userCards">
     <div class="ui vertical menu">
         <div class="item">
-            <div class="header">Users</div>
+            <div class="header">Select a user</div>
             <div id="users" class="menu">
                 <a class="consumer active item" href="#">John - Consumer - Germany</a>
                 <a href="#" class="contributor item">Linda - Contributor - US</a>
@@ -74,4 +56,27 @@
         </div>
     </div>
 
+</template>
+
+
+<template name="senseButtons">
+    <h4 class="ui dividing header">Content to embed</h4>
+
+    <div class="ui vertical menu">
+        <div class="item">
+            <div class="header">Which App?</div>
+            <div id="app" class="menu">
+                <a id="app1" class="active item">Sales</a>
+                <a id="app2" class="item">Bikes</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">Which page to embed?</div>
+            <div id="page" class="menu">
+                <a href="#" class="sheet item ">Sheet overview</a>
+                <a href="#" class="active app item ">Sheet</a>
+                <a href="#" class="QMC item">Management console</a>
+            </div>
+        </div>
+    </div>
 </template>
