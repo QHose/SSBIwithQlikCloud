@@ -1,7 +1,7 @@
-    cd C:\GitHub\QRSMeteor
+    cd C:\GitHub\SSBIwithQlikCloud\ssbiQlikCloud
     $PROJECT_ROOT = (Get-Item -Path ".\" -Verbose).FullName
     echo "Build tool project root directory: "$PROJECT_ROOT
-    $BASE_APP_NAME = "SSBIQlikCloud"
+    $BASE_APP_NAME = "ssbiqlikcloud"
     $BUILD_DIR = ".\.build"
     $BUNDLE_DIR = $BUILD_DIR+"\bundle"
     $VERSION = Get-Date -format yyyyMMdd-Hmm
@@ -32,8 +32,7 @@
 
     echo "STEP copy dockerfile to bundle folder, so docker can build the image"
     Copy-Item Dockerfile $BUNDLE_DIR
-    Copy-Item startNode.sh $BUNDLE_DIR
-    Copy-Item settings-development-example.json $BUNDLE_DIR    
+    Copy-Item startNode.sh $BUNDLE_DIR  
 
     echo  "STEP go to bundle dir" 
     cd "$BUNDLE_DIR"

@@ -58,11 +58,11 @@ const methods = {
 
 
     if (fs.existsSync(Meteor.settings.private.certificatesDirectory + "/private.pem")) {
-      console.log("🚀 ~ file: token.js:53 ~private key used to sign jwt:", key)
-      console.log("token.js sign jwt: signingOptions", signingOptions);
-      console.log("token.js sign jwt: payload", payload);
+      // console.log("🚀 ~ file: token.js:53 ~private key used to sign jwt:", key)
+      // console.log("token.js sign jwt: signingOptions", signingOptions);
+      // console.log("token.js sign jwt: payload", payload);
       const token = jsonWebToken.sign(payload, key, signingOptions);
-      console.log("token.js sign jwt: token: ", token);
+      // console.log("token.js sign jwt: token: ", token);
       return token;
     } else {
       throw new Meteor.Error('The private.pem file cant be found in this directory: '+Meteor.settings.private.certificatesDirectory);

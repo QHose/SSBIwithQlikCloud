@@ -28,7 +28,7 @@ Meteor.methods({
       return genT;
     } catch (err) {
       console.error(
-        "unable to generate JWT token, did you supply the correct public.pem and private.pem in the dir: "+Meteor.settings.private.certificatesDirectory,
+        "unable to generate JWT token, did you supply the correct private.pem file in the dir: "+Meteor.settings.private.certificatesDirectory+" . Note the path in the container is the mount path in docker compose file.",
         err
       );
       throw new Meteor.Error("generate jwt token failed", err.message);
