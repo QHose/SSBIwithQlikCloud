@@ -6,7 +6,7 @@
 
 <template name="mainLayout">
     <div class="ui grid" style="margin: 10px">
-        <div class="two wide column" style="max-width: 400px;">{{> SSBIUsers}}</div>
+        <div class="two wide column">{{> SSBIUsers}}</div>
         <div class="fourteen wide column">
             {{#if show}}
             <h4 class="ui dividing header">Qlik Sense embedded {{ currentUser}}</h4>
@@ -25,8 +25,7 @@
 
 
 <template name="SSBIUsers">
-    <h4 class="ui dividing header" style="position: relative;
-  left: -13px; margin-top: 0px;">Users from your SaaS platform </h4>
+    <h4 class="ui dividing header" style="left: -13px; margin-top: 0px;">Users from your SaaS platform </h4>
     <div class="ui  grid userList">
         <div class="ui text loader">Logging in {{user}}...</div>>
         {{> userCards}}
@@ -48,7 +47,7 @@
         <div class="item">
             <div class="header">Select a user</div>
             <div id="users" class="menu">
-                <a class="consumer active item" href="#">John - Consumer - Germany</a>
+                <a class="consumer item" href="#">John - Consumer - Germany</a>
                 <a href="#" class="contributor item">Linda - Contributor - US</a>
                 <a href="#" class="developer item">Martin - Developer - Everything</a>
                 <a href="#" class="admin item">Paul - Admin</a>
@@ -60,7 +59,7 @@
 
 
 <template name="senseButtons">
-    <h4 class="ui dividing header">Content to embed</h4>
+    <h4 class="ui dividing header">Qlik content</h4>
 
     <div class="ui vertical menu">
         <div class="item">
@@ -75,7 +74,26 @@
             <div id="page" class="menu">
                 <a href="#" class="sheet item ">Sheet overview</a>
                 <a href="#" class="active app item ">Sheet</a>
-                <a href="#" class="QMC item">Management console</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">Select page to open in new tab</div>
+            <div id="page" class="menu">
+                <a href="#" class="hub item">Hub</a>
+                <a href="#" class="QMC item">Management console</a>                
+            </div>
+        </div>
+    </div>
+    <h4 class="ui dividing header">Read more</h4>
+
+    <div class="ui vertical menu">
+
+        <div class="item">
+            <!-- <div class="header">Technical background</div> -->
+            <div id="page" class="menu">
+                <a href="https://jwt.io/" class="item " target="_blank">JWT contents (copy from your browser console)</a>
+                <a href="https://integration.qlik.com/?selection=Fy7zcuGmGpnGwf3wr" class="item " target="_blank">Embedding info</a>
+                <a href="https://integration.qlik.com/?selection=7iuJgTWCvddnaLpym" class="item" target="_blank">Security info</a>
             </div>
         </div>
     </div>

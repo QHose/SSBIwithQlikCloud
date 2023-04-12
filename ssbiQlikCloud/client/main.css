@@ -5,7 +5,12 @@ body {
 
 
 .SSBIIFrame {    
-    height: 84vh;
+    height: 93vh;
     width: 100%;
+    /* max-width: calc(100% -300px); */
     border: none;
+}
+
+.ui.vertical.menu {
+  width: inherit;
 }

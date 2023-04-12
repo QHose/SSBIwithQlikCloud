@@ -147,8 +147,12 @@ Template.senseButtons.events({
     Session.set("IFrameUrl", appUrl);
   },
   "click .QMC "() {
-    Session.set("IFrameUrl", QMCUrl);
+    // Session.set("IFrameUrl", QMCUrl);
+    window.open(QMCUrl, '_blank');
   },
+  "click .hub "() {
+    window.open(hubUrl, '_blank');
+  }
 });
 
 Template.SSBIUsers.onCreated(function () {
