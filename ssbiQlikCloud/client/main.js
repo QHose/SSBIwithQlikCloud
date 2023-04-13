@@ -88,28 +88,28 @@ Template.SSBIUsers.events({
   "click .consumer"() {
     var passport = {
       UserId: "John",
-      Groups: ["anonymous", "CONSUMER", "UNITED STATES"],
+      Groups: ["anonymous", "CONSUMER", "UNITED STATES", "AMER"],
     };
     login(passport);
   },
   "click .contributor"() {
     var passport = {
       UserId: "Linda",
-      Groups: ["CONTRIBUTOR", "UNITED STATES"],
+      Groups: ["CONTRIBUTOR", "GERMANY", "EMEA"],
     };
     login(passport);
   },
   "click .developer"() {
     var passport = {
       UserId: "Martin",
-      Groups: ["DEVELOPER"],
+      Groups: ["DEVELOPER", "EMEA", "AMER","APAC"],
     };
     login(passport);
   },
   "click .admin"(e, t) {
     var passport = {
       UserId: "Paul",
-      Groups: ["ADMIN", "UNITED STATES"],
+      Groups: ["ADMIN"],
     };
     login(passport);
   },
