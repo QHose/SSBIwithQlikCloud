@@ -109,7 +109,7 @@ Template.SSBIUsers.events({
   "click .admin"(e, t) {
     var passport = {
       UserId: "Paul",
-      Groups: ["CONTRIBUTOR", "UNITED STATES"],
+      Groups: ["ADMIN", "UNITED STATES"],
     };
     login(passport);
   },
