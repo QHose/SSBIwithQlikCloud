@@ -18,9 +18,9 @@ Meteor.methods({
 
     try {
       const uuid = uuidv4();
-      const sub = `sub_${uuid}`;
+      const sub = `sub_${uuid}`; //RANDOM LONG STRING
       const name = passport.UserId;
-      const email = `${uuid}@demo.anon`;
+      const email = `${uuid}@demo.anon`;//name+'@fake.com'; 
       const groups = passport.Groups;
 
       const genT = token.generate(sub, name, email, groups);

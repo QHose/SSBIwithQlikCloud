@@ -1,13 +1,21 @@
 {
     "adminEmails": "mbj@qlik.com",
     "public": {
-        "tenantDomain": "bies.eu.qlikcloud.com",
-        "qlikWebIntegrationId": "OdLshfnflDBoAeq1-WsEvkfCDpt7UfNg",
+        "tenantDomain": "integration.eu.qlikcloud.com",
+        "qlikWebIntegrationId": "hJsNOSwnlAgwWlvQqNk5x-UBIXMrDCNK",
         "SSBI": {
-            "appId1":"194ed244-20b5-4ee4-bee9-7e5fec685b93",
-            "sheetId1": "XkgjPf",
-            "appId2":"194ed244-20b5-4ee4-bee9-7e5fec685b93",
-            "sheetId2": "XkgjPf"
+            "app1Name": "Sales - Bike shop",
+            "appId1":"320e9fa0-daa1-4f1a-a609-046b74aa8aa2",
+            "sheetId1": "28bcbf8e-90c4-417a-a11e-46a1c678dcc1",
+            "app2Name": "Order-to-Cash Analytics",
+            "appId2":"84847eb9-10e9-43e8-b279-1474e5ddcd55",
+            "sheetId2": "13df2da9-c86a-49b0-8000-796ee7bd56b3",
+            "app3Name": "SAP Procurement",
+            "appId3":"a8edf314-7e63-45ae-a37e-b878b9c4f1f1",
+            "sheetId3": "3ca9c87c-aa89-473a-a558-30440a288d0e",
+            "app4Name": "Sales insights",
+            "appId4":"f2494026-ef08-419d-83cf-ad5b1b45b9ab",
+            "sheetId4": "BDtv"
         }
     },
     "private": {

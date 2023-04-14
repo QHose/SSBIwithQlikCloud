@@ -5,11 +5,15 @@ import { Session } from "meteor/session";
 import "./main.html";
 import axios from "axios";
 
+// Meteor.startup(function () {
+//
+// });
+
 var server,
   QMCUrl,
   hubUrl,
-  sheetUrl,
-  appUrl = "";
+  sheetOverviewUrl,
+  singleSheet = "";
 
 Template.mainLayout.helpers({
   currentUser() {
@@ -18,36 +22,58 @@ Template.mainLayout.helpers({
     }
   },
   show() {
-    return Session.get("currentUser") &&
-      !Session.equals("loadingIndicator", "loading")
-      ? "Yes"
-      : null;
+    return Session.get("currentUser");
   },
 });
 
+Tracker.autorun(() => {
+  var user = Session.get("currentUser");
+  console.log(
+    "!!!!!!!!!!!! Tracker.autorun change detected, current user",
+    user
+  );
+  console.log("appId: ", Session.get("appId"));
+  console.log("sheetId: ", Session.get("sheetId"));
+
+  server = "https://" + Meteor.settings.public.tenantDomain;
+  QMCUrl = server + "/console";
+  hubUrl = server;
+  console.log("Qlik Tenant:", server);
+
+  var url = "";
+  switch (Session.get("IFrameUrl")) {
+    case "sheetOverview":
+      url = server + "/sense/app/" + Session.get("appId");
+      break;
+    case "singleSheet":
+      url =
+        server +
+        "/sense/app/" +
+        Session.get("appId") +
+        "/sheet/" +
+        Session.get("sheetId") +
+        "/state/analysis";
+      break;
+  }
+  console.log("URL inserted into the IFrame: ", url);
+
+  //hack to refresh the iframe
+  try {
+    var iframe = document.getElementById("SSBIIFrame");
+    iframe.src = url;
+  } catch (error) {}
+});
+
 Template.SSBIUsers.onCreated(function () {
-  Session.set("loadingIndicator", "");
-  Session.set("currentUser", null);
+  delete Session
+    .keys[("currentUser", "appId", "IFrameUrl", "sheetId", "loadingIndicator")];
+  // Session.set("loadingIndicator", "");
+  // Session.set("currentUser", null);
   Session.set("appId", Meteor.settings.public.SSBI.appId1);
   Session.set("sheetId", Meteor.settings.public.SSBI.sheetId1);
-  server = Meteor.settings.public.tenantDomain;
-  server = "https://" + server;
-
-  console.log("server", server);
-  QMCUrl = server + "/console";
-  hubUrl = server + "/hub";
-  sheetUrl = server + "/sense/app/" + Session.get("appId");
-  console.log("sheetUrl", sheetUrl);
-  appUrl =
-    server +
-    "/sense/app/" +
-    Session.get("appId") +
-    "/sheet/" +
-    Session.get("sheetId") +
-    "/state/analysis";
-  console.log("SSBIApp URL", appUrl);
-  console.log("console URL", QMCUrl);
-  Session.set("IFrameUrl", appUrl);
+  Session.set("IFrameUrl", "singleSheet");
+  // console.log("onCreated appId: ", Session.get("appId"));
+  // console.log("onCreated sheetId: ", Session.get("sheetId"));
 });
 
 Template.SSBISenseIFrame.onRendered(function () {
@@ -55,12 +81,28 @@ Template.SSBISenseIFrame.onRendered(function () {
 });
 
 Template.SSBISenseIFrame.helpers({
-  appURL() {
-    // console.log('SSBISenseIFrame helper: de app url is: ', Session.get('appUrl'));
-    return Session.get("IFrameUrl");
+  url() {
+    return Session.get("url");
   },
 });
 
+Template.senseButtons.helpers({
+  app1() {
+    return Meteor.settings.public.SSBI.app1Name;
+  },
+  app2() {
+    return Meteor.settings.public.SSBI.app2Name;
+  },
+  app3() {
+    return Meteor.settings.public.SSBI.app3Name;
+  },
+  app4() {
+    return Meteor.settings.public.SSBI.app4Name;
+  },
+  JWTIOLink() {
+    return "https://jwt.io/#id_token=" + Session.get("token");
+  },
+});
 
 Template.SSBIUsers.helpers({
   currentUser() {
@@ -102,7 +144,7 @@ Template.SSBIUsers.events({
   "click .developer"() {
     var passport = {
       UserId: "Martin",
-      Groups: ["DEVELOPER", "EMEA", "AMER","APAC"],
+      Groups: ["DEVELOPER", "EMEA", "AMER", "APAC"],
     };
     login(passport);
   },
@@ -117,13 +159,11 @@ Template.SSBIUsers.events({
 
 Template.senseButtons.events({
   "click #page .item"(event, template) {
-    // console.log("page selector clicked", event);
     template.$("#page .item").removeClass("active");
     $(event.target).addClass("active");
     $(this).addClass("active");
   },
   "click #app .item"(event, template) {
-    // console.log("app selector clicked", event);
     template.$(" .item").removeClass("active");
     $(event.target).addClass("active");
 
@@ -137,47 +177,47 @@ Template.senseButtons.events({
     Session.set("appId", Meteor.settings.public.SSBI.appId2);
     Session.set("sheetId", Meteor.settings.public.SSBI.sheetId2);
   },
-  "click .hub "() {
-    Session.set("IFrameUrl", hubUrl);
+  "click #app3 "() {
+    Session.set("appId", Meteor.settings.public.SSBI.appId3);
+    Session.set("sheetId", Meteor.settings.public.SSBI.sheetId3);
   },
-  "click .sheet "() {
-    Session.set("IFrameUrl", sheetUrl);
+  "click #app4 "() {
+    Session.set("appId", Meteor.settings.public.SSBI.appId4);
+    Session.set("sheetId", Meteor.settings.public.SSBI.sheetId4);
   },
-  "click .app "() {
-    Session.set("IFrameUrl", appUrl);
+  "click #sheetOverview "() {
+    Session.set("IFrameUrl", "sheetOverview");
   },
-  "click .QMC "() {
-    // Session.set("IFrameUrl", QMCUrl);
-    window.open(QMCUrl, '_blank');
+  "click #singleSheet"() {
+    Session.set("IFrameUrl", "singleSheet");
   },
-  "click .hub "() {
-    window.open(hubUrl, '_blank');
-  }
+  "click #qmc "() {
+    window.open(QMCUrl, "_blank");
+  },
+  "click #hub "() {
+    window.open(hubUrl, "_blank");
+  },
 });
 
-Template.SSBIUsers.onCreated(function () {
-  Session.set("appUrl", appUrl);
-});
+// Template.SSBIUsers.onCreated(function () {
+//   Session.set("singleSheet", singleSheet);
+// });
 
 Template.SSBIUsers.onRendered(function () {
   // this.$(".ui.accordion").accordion();
-
 });
 
 async function login(passport) {
-  console.log("🚀 ~ file: SSBI.js:136 ~ login ~ passport:", passport);
+  // console.log("🚀 ~ file: SSBI.js:136 ~ login ~ passport:", passport);
   try {
-    Session.set("currentUser", passport.UserId);
     await Meteor.call("getJWTToken", passport, async function (error, token) {
-      Session.set("IFrameUrl", null);
       if (error) {
         console.error("Error getJWTToken", error);
       } else {
-        var URLtoOpen = Session.get("appUrl"); // the url of the sense page hub-app-sheet
         await jwtLogin(token);
         await isLoggedIn();
-        console.log("login: the url to open is: ", URLtoOpen);
-        Session.set("IFrameUrl", URLtoOpen); // when this var is set, the iframe will be rerendered with the new URL 
+        Session.set("currentUser", passport.UserId);
+        Session.set("token", token);
       }
     });
   } catch (err) {
@@ -185,26 +225,9 @@ async function login(passport) {
   }
 }
 
-async function qlikLogin() {
-  const tokenRes = await (await getJWTToken(JWTENDPOINT)).json();
-  const loginRes = await jwtLogin(tokenRes.token);
-  console.log(
-    "🚀 ~ file: index.html:46 ~ qlikLogin ~ login result status",
-    loginRes
-  );
-  if (loginRes.status != 200) {
-    const message = "Something went wrong while logging in.";
-    alert(message);
-    throw new Error(message);
-  }
-  
-
-  return true;
-}
-
-async function isLoggedIn(){
+async function isLoggedIn() {
   const user = await checkLoggedIn();
-  console.log("🚀 ~ file: main.js:206 ~ isLoggedIn ~ user:", user)
+  // console.log("🚀 ~ file: main.js:206 ~ isLoggedIn ~ user:", user);
   if (!user.name) {
     const message =
       "Third-party cookies are not enabled in your browser settings and/or browser mode.";
@@ -213,7 +236,6 @@ async function isLoggedIn(){
   }
   console.log("Current user logged in into Qlik: ", user);
 }
-
 
 async function jwtLogin(token) {
   console.log(
@@ -245,7 +267,7 @@ async function checkLoggedIn() {
         "qlik-web-integration-id": Meteor.settings.public.qlikWebIntegrationId,
       },
     }
-  ).then(response => response.json());
+  ).then((response) => response.json());
 }
 
 Template.userCards.onRendered(function () {

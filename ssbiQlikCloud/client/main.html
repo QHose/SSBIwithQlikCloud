@@ -19,7 +19,7 @@
 
 <template name="SSBISenseIFrame">
     <div class="IFrameSense">
-        <iframe id="SSBIIFrame" class="SSBIIFrame" src="{{appURL}}"></iframe>
+        <iframe id="SSBIIFrame" class="SSBIIFrame" src="{{url}}"></iframe>
     </div>
 </template>
 
@@ -47,9 +47,9 @@
         <div class="item">
             <div class="header">Select a user</div>
             <div id="users" class="menu">
-                <a class="consumer item" href="#">John - Consumer - Germany</a>
-                <a href="#" class="contributor item">Linda - Contributor - US</a>
-                <a href="#" class="developer item">Martin - Developer - Everything</a>
+                <a class="consumer item" href="#">John - Consumer - Americas</a>
+                <a href="#" class="contributor item">Linda - Contributor - EU/Germany</a>
+                <a href="#" class="developer item">Martin - Developer - Whole world</a>
                 <a href="#" class="admin item">Paul - Admin</a>
             </div>
         </div>
@@ -65,22 +65,32 @@
         <div class="item">
             <div class="header">Select your app</div>
             <div id="app" class="menu">
-                <a id="app1" class="active item">Sales</a>
-                <a id="app2" class="item">Bikes</a>
+                {{#with app1}}
+                <a id="app1" class="active item">{{this}}</a>
+                {{/with}}
+                {{#with app2}}
+                <a id="app2" class="item">{{this}}</a>
+                {{/with}}
+                {{#with app3}}
+                <a id="app3" class="item">{{this}}</a>
+                {{/with}}
+                {{#with app4}}
+                <a id="app4" class="item">{{this}}</a>
+                {{/with}}
             </div>
         </div>
         <div class="item">
             <div class="header">Select page to embed</div>
             <div id="page" class="menu">
-                <a href="#" class="sheet item ">Sheet overview</a>
-                <a href="#" class="active app item ">Sheet</a>
+                <a href="#" id="sheetOverview" class="item ">Sheet overview</a>
+                <a href="#" id="singleSheet" class="active item ">Single Sheet</a>
             </div>
         </div>
         <div class="item">
             <div class="header">Select page to open in new tab</div>
             <div id="page" class="menu">
-                <a href="#" class="hub item">Hub</a>
-                <a href="#" class="QMC item">Management console</a>                
+                <a href="#" id="hub" class="item">Hub</a>
+                <a href="#" id="qmc" class="item">Management console</a>
             </div>
         </div>
     </div>
@@ -91,9 +101,11 @@
         <div class="item">
             <!-- <div class="header">Technical background</div> -->
             <div id="page" class="menu">
-                <a href="https://jwt.io/" class="item " target="_blank">JWT contents (copy from your browser console)</a>
-                <a href="https://integration.qlik.com/?selection=Fy7zcuGmGpnGwf3wr" class="item " target="_blank">Embedding info</a>
-                <a href="https://integration.qlik.com/?selection=7iuJgTWCvddnaLpym" class="item" target="_blank">Security info</a>
+                <a href="{{JWTIOLink}}" class="item " target="_blank">View JWT contents for current user</a>
+                <a href="https://integration.qlik.com/?selection=Fy7zcuGmGpnGwf3wr" class="item "
+                    target="_blank">Embedding info</a>
+                <a href="https://integration.qlik.com/?selection=7iuJgTWCvddnaLpym" class="item"
+                    target="_blank">Security info</a>
             </div>
         </div>
     </div>
