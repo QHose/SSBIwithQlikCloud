@@ -13,7 +13,8 @@ var server,
   QMCUrl,
   hubUrl,
   sheetOverviewUrl,
-  singleSheet = "";
+  singleSheet
+   = "";
 
 Template.mainLayout.helpers({
   currentUser() {
@@ -27,41 +28,55 @@ Template.mainLayout.helpers({
 });
 
 Tracker.autorun(() => {
+  var url = "";
+  // Session.set('url', "");
   var user = Session.get("currentUser");
   console.log(
     "!!!!!!!!!!!! Tracker.autorun change detected, current user",
     user
   );
-  console.log("appId: ", Session.get("appId"));
-  console.log("sheetId: ", Session.get("sheetId"));
+  var appId = Session.get("appId");
+  var sheetId =  Session.get("sheetId");
+  // console.log("Qlik Tenant:", server);
+  console.log("appId: ", appId);
+  console.log("sheetId: ",sheetId);
+  var IFrameURL = Session.get("IFrameUrl");
+  console.log("path requested: ",IFrameURL);
 
+  //which Sense screen to show?
   server = "https://" + Meteor.settings.public.tenantDomain;
   QMCUrl = server + "/console";
   hubUrl = server;
-  console.log("Qlik Tenant:", server);
+  var sheetOverviewUrl = server + "/sense/app/" + appId;
+  var singleSheet =  `${server}/sense/app/${appId}/sheet/${sheetId}/state/analysis`;
+  var singleAPI = `${server}/single/?appid=${appId}&sheet=${sheetId}&opt=ctxmenu,currsel`;
 
-  var url = "";
-  switch (Session.get("IFrameUrl")) {
+  switch (IFrameURL) {
     case "sheetOverview":
-      url = server + "/sense/app/" + Session.get("appId");
+      url = sheetOverviewUrl
       break;
     case "singleSheet":
-      url =
-        server +
-        "/sense/app/" +
-        Session.get("appId") +
-        "/sheet/" +
-        Session.get("sheetId") +
-        "/state/analysis";
+      url = singleSheet
       break;
+    case "singleAPI":
+      url = singleAPI;
+      console.log("🚀 ~ singleAPI url:", url)
+      break;
+    default: //no selection made yet for the path inside qlik.
+      url = singleSheet;
   }
+  Session.set('url', url);
   console.log("URL inserted into the IFrame: ", url);
-
-  //hack to refresh the iframe
-  try {
-    var iframe = document.getElementById("SSBIIFrame");
-    iframe.src = url;
-  } catch (error) {}
+  // if (user) {
+  //   console.log("🚀 ~ file: main.js:62 ~ Tracker.autorun ~ user found, nu inserting iframe url:", user)
+  //   //hack to refresh the iframe
+  //   try {
+  //     $('#SSBIIFrame').attr('src', url)
+  //     // document.getElementById("SSBIIFrame").src = url;
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 });
 
 Template.SSBIUsers.onCreated(function () {
@@ -82,7 +97,9 @@ Template.SSBISenseIFrame.onRendered(function () {
 
 Template.SSBISenseIFrame.helpers({
   url() {
-    return Session.get("url");
+    var url = Session.get("url");
+    console.log('-------SSBISenseIFrame.helpers -  URL changed: '+ url)
+    return url;
   },
 });
 
@@ -148,12 +165,14 @@ Template.SSBIUsers.events({
     };
     login(passport);
   },
-  "click .admin"(e, t) {
-    var passport = {
-      UserId: "Paul",
-      Groups: ["ADMIN"],
-    };
-    login(passport);
+  "click .admin"(e, t) {    
+    window.open(Meteor.settings.public.SSBI.videoPaul, "_blank");
+
+    // var passport = {
+    //   UserId: "Paul",
+    //   Groups: ["ADMIN"],
+    // };
+    // login(passport);
   },
 });
 
@@ -191,6 +210,10 @@ Template.senseButtons.events({
   "click #singleSheet"() {
     Session.set("IFrameUrl", "singleSheet");
   },
+  "click #singleAPI"() {
+    Session.set("IFrameUrl", "singleAPI");
+    console.log("🚀 ~ file: main.js:216 ~ singleAPI clicked:")
+  },
   "click #qmc "() {
     window.open(QMCUrl, "_blank");
   },
@@ -198,10 +221,6 @@ Template.senseButtons.events({
     window.open(hubUrl, "_blank");
   },
 });
-
-// Template.SSBIUsers.onCreated(function () {
-//   Session.set("singleSheet", singleSheet);
-// });
 
 Template.SSBIUsers.onRendered(function () {
   // this.$(".ui.accordion").accordion();
@@ -214,6 +233,7 @@ async function login(passport) {
       if (error) {
         console.error("Error getJWTToken", error);
       } else {
+        Session.set("url", null);
         await jwtLogin(token);
         await isLoggedIn();
         Session.set("currentUser", passport.UserId);
@@ -238,10 +258,10 @@ async function isLoggedIn() {
 }
 
 async function jwtLogin(token) {
-  console.log(
-    `🚀 jwtLogin ~ Now using the token received from the server to make a client side call to  https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId} with jwtLogin ~ token:`,
-    token
-  );
+  // console.log(
+  //   `🚀 jwtLogin ~ Now using the token received from the server to make a client side call to  https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId} with jwtLogin ~ token:`,
+  //   token
+  // );
   const authHeader = `Bearer ${token}`;
   return await fetch(
     `https://${Meteor.settings.public.tenantDomain}/login/jwt-session?qlik-web-integration-id=${Meteor.settings.public.qlikWebIntegrationId}`,
