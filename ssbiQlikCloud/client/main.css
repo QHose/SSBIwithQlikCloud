@@ -1,5 +1,6 @@
 body {
-  padding: 10px;
+  padding: 25px;
+  /* margin: 1em; */
   font-family: sans-serif;
 }
 
@@ -13,4 +14,8 @@ body {
 
 .ui.vertical.menu {
   width: inherit;
+}
+
+.headermenudemo2 {
+  min-height: 44px;
 }

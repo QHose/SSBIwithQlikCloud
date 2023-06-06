@@ -5,11 +5,11 @@
 </body>
 
 <template name="mainLayout">
-    <div class="ui grid" style="margin: 10px">
+    <div class="ui relaxed grid">
         <div class="two wide column">{{> SSBIUsers}}</div>
         <div class="fourteen wide column">
             {{#if show}}
-            <h4 class="ui dividing header">Qlik Sense embedded {{ currentUser}}</h4>
+            <h4 class="ui dividing header headermenudemo2">Qlik Sense embedded {{ currentUser}}</h4>
 
             {{> SSBISenseIFrame}}
             {{/if}}
@@ -17,19 +17,13 @@
     </div>
 </template>
 
-<template name="SSBISenseIFrame">
-    <div class="IFrameSense">
-        <iframe id="SSBIIFrame" class="SSBIIFrame ui segment" style="padding: 0px;" src="{{url}}"></iframe>
-    </div>
-</template>
-
-
 <template name="SSBIUsers">
-    <h4 class="ui dividing header" style="left: -13px; margin-top: 0px;">Users from your SaaS platform </h4>
+    <h4 class="ui dividing header headermenudemo2" style="margin-left: -13px;margin-right: -13px;">Users from your SaaS platform </h4>
     <div class="ui  grid userList">
-        <div class="ui text loader">Logging in {{user}}...</div>>
-        {{> userCards}}
-
+        <div class="ui text loader">Logging in {{user}}...</div>
+        <div class="ui row">
+            {{> userCards}}
+        </div>
 
         {{#if showSenseButtons}}
         <div class="ui row">
@@ -37,8 +31,12 @@
         </div>
         {{/if}}
     </div>
+</template>
 
-
+<template name="SSBISenseIFrame">
+    <div class="IFrameSense">
+        <iframe id="SSBIIFrame" class="SSBIIFrame ui segment" style="padding: 0px;" src="{{url}}"></iframe>
+    </div>
 </template>
 
 
@@ -105,8 +103,11 @@
                 <a href="{{JWTIOLink}}" class="item " target="_blank">View JWT contents for current user</a>
                 <a href="https://integration.qlik.com/?selection=Fy7zcuGmGpnGwf3wr" class="item "
                     target="_blank">Embedding info</a>
+                <a href="https://integrationdemo3.qlik.com" class="item" target="_blank">Embedding options demo</a>
+                <a href="https://demos.qlik.com/qliksense" class="item" target="_blank">Demo dashboards (apps)</a>
                 <a href="https://integration.qlik.com/?selection=7iuJgTWCvddnaLpym" class="item"
                     target="_blank">Security info</a>
+
             </div>
         </div>
     </div>
