@@ -26,3 +26,4 @@ blaze-hot               # Update files using Blaze's API with HMR
 session
 semantic:ui-css
 tarang:ssl
+browser-policy
