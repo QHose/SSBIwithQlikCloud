@@ -44,7 +44,7 @@ Meteor.startup(function () {
       res.setHeader('Expect-CT', 'enforce, max-age=604800');
   
   
-      var domain = 'integration.qlik.com'
+      var domain = 'https://integrationdemo2.qlik.com'
   
       // res.setHeader('Content-Security-Policy', 'frame-ancestors', 'self');
       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
