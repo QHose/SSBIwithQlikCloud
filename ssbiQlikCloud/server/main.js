@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import "./serverFunctions";
+import helmet from "helmet";
 // const fs = require("fs");
 
 
 Meteor.startup(function () {
-    WebApp.addHtmlAttributeHook(() => ({ lang: 'en' }));
-    WebApp.connectHandlers.use(helmet.frameguard());  // defaults to sameorigin
+    WebApp.addHtmlAttributeHook(() => ({ lang: 'en' }));    
     WebApp.connectHandlers.use(
       helmet.contentSecurityPolicy({
         directives: {
