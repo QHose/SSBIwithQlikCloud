@@ -1,5 +1,5 @@
 .build/
-ssbiQlikCloud/.build
+.ssbiQlikCloud/.build
 *.pem
 
 # Logs
