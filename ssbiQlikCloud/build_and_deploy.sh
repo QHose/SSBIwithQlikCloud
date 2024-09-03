@@ -1,9 +1,8 @@
 #!/bin/bash
 
-cd /path/to/SSBIwithQlikCloud/ssbiQlikCloud
 PROJECT_ROOT=$(pwd)
 echo "Build tool project root directory: $PROJECT_ROOT"
-BASE_APP_NAME="ssbiqlikcloud"
+BASE_APP_NAME="ssbi"
 BUILD_DIR="../.build"
 BUNDLE_DIR="$BUILD_DIR/bundle"
 VERSION=$(date +%Y%m%d-%H%M)

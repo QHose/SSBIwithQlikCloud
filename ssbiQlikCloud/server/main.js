@@ -14,7 +14,8 @@ Meteor.startup(function () {
           connectSrc: ['*'],
           imgSrc: ["'self'", 'https://*.qlik.com', 'https://user-images.githubusercontent.com', 'https://lucidchart.com', 'https://github.com'],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://*.qlik.com', 'https://fonts.googleapis.com/css'],
-          frameSrc: ['https://integrationdemo1.qlik.com', 'https://integrationdemo2.qlik.com', 'https://integrationdemo3.qlik.com', 'https://*.qlik.com']
+          frameSrc: ['https://integration.eu.qlikcloud.com', 'https://integrationdemo2.qlik.com', 'https://integrationdemo3.qlik.com', 'https://*.qlik.com'],
+          frameAncestors: ["'self'", "https://integration.qlik.com"]
         }
       }),
   
@@ -36,9 +37,12 @@ Meteor.startup(function () {
       res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
       // Frameguard - https://helmetjs.github.io/docs/frameguard/
       res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+       
+      // res.setHeader('frame-ancestors', 'https://integration.qlik.com');
       // X-XSS protection
       res.setHeader('X-XSS-Protection', '1; mode=block');
-  
+      // //cache control
+      // res.setHeader('X-XSS-Protection', '1; mode=block');
   
       // Expect CT
       res.setHeader('Expect-CT', 'enforce, max-age=604800');
