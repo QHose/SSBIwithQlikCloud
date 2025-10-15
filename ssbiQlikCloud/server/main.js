@@ -1,16 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import "./serverFunctions";
 import helmet from "helmet";
+import crypto from 'crypto';
 // const fs = require("fs");
 
 
 Meteor.startup(function () {
+  
+  // Genereer een unieke nonce per request
+  const nonce = crypto.randomBytes(16).toString('base64');
+  res.locals = { nonce }; // Maak beschikbaar voor later gebruik
+
     WebApp.addHtmlAttributeHook(() => ({ lang: 'en' }));    
     WebApp.connectHandlers.use(
+      
       helmet.contentSecurityPolicy({
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'"], //scriptSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", `'nonce-${nonce}'`],
           connectSrc: ['*'],
           imgSrc: ["'self'", 'https://*.qlik.com', 'https://user-images.githubusercontent.com', 'https://lucidchart.com', 'https://github.com'],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://*.qlik.com', 'https://fonts.googleapis.com/css'],
